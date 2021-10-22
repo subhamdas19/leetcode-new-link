@@ -1,0 +1,361 @@
+
+
+https://webrewrite.com/sort-characters-by-frequency/
+
+
+Sort Characters by Frequency using HashMap and Priority Queue – Java Code
+
+In our previous example, we sorted the HashMap by values. Instead of sorting the HashMap, we can use priority queue to solve this problem.
+
+While creating an instance of priority queue, passed the custom comparator which arrange the characters based on their count (when characters are added in a priority queue).
+
+Then, Iterate the priority queue the character which has highest frequency comes first then next and so on.
+
+The time complexity of this approach is O(nlogn) and it’s space complexity is O(n).
+//Using HashMap and Priority Queue
+public String frequencySortByPQ(String s) {
+Map<Character, Integer> charCountMap = new HashMap<>();
+/*
+* Create a map of character and it's count.
+*/
+for(int i = 0; i < s.length(); i++) {
+char ch = s.charAt(i);
+charCountMap.put(ch, charCountMap.getOrDefault(ch, 0) + 1);
+}
+PriorityQueue<Character> pq = 
+new PriorityQueue<Character>((a, b) -> charCountMap.get(b) - charCountMap.get(a));
+//We add all the characters in a priority queue
+pq.addAll(charCountMap.keySet());
+StringBuilder sb = new StringBuilder();
+while(!pq.isEmpty()) {
+char c = pq.remove();
+for(int i = 0; i < charCountMap.get(c); i++) {
+sb.append(c);
+}
+}
+return sb.toString();
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+	
+//Using HashMap and Priority Queue
+ 
+public String frequencySortByPQ(String s) {
+ 
+ 
+     Map<Character, Integer> charCountMap = new HashMap<>();
+ 
+      /*
+       * Create a map of character and it's count.
+       */
+       for(int i = 0; i < s.length(); i++) {
+          char ch = s.charAt(i);
+          charCountMap.put(ch, charCountMap.getOrDefault(ch, 0) + 1);
+       }
+ 
+       PriorityQueue<Character> pq = 
+         new PriorityQueue<Character>((a, b) -> charCountMap.get(b) - charCountMap.get(a));
+ 
+      //We add all the characters in a priority queue
+      pq.addAll(charCountMap.keySet());
+ 
+      StringBuilder sb = new StringBuilder();
+ 
+      while(!pq.isEmpty()) {
+          char c = pq.remove();
+ 
+          for(int i = 0; i < charCountMap.get(c); i++) {
+              sb.append(c);
+           }
+       }
+ 
+        return sb.toString();
+   }
+Sort Characters by Frequency using HashMap and Bucket Sort – Java Code
+
+Let’s improve the time complexity of our previous code. In this example, we are going to solve this problem using HashMap and bucket sort.
+
+Here are the following steps to solve this problem –
+
+Step 1: First step is to traverse a string and put each character and it’s count in a HashMap.
+
+Suppose the string is “teeetfff”. So, each character and it’s counts are store like this (t : 2, e : 3, f : 3).
+
+Find duplicate characters in a string
+
+Step 2: After that create a multi-storage bucket. The size of this bucket will be maximum frequency of character plus one. And, In each storage level store characters with the same frequency.
+
+For example:
+
+bucket[3] = ef, bucket[2] = t
+
+Step 3: Traverse this bucket from descending order. Merge elements with the same frequency and return the final string.
+
+The output is “fffeeett”
+
+We have discussed the algorithm to solve this problem. Let’s implement this algorithm using java code.
+
+The time complexity of this approach is O(n).
+/*
+Java code to sort characters by frequency
+*/
+public class SortCharByFreq {
+public static String sortChar(String s) {
+int n = s.length();
+StringBuilder res = new StringBuilder();
+Map<Character, Integer> charCount = new HashMap<>();
+int maxFreq = 0;
+int freq = 0;
+//Traverse a string
+for(int i = 0; i < s.length(); i++) {
+//pick each character
+char ch = s.charAt(i);
+freq = charCount.getOrDefault(ch, 0)+1;
+//put character with their count in a map
+charCount.put(ch, freq);            
+//Keep track of maximum frequency
+maxFreq = Math.max(freq,maxFreq);        
+}
+//Create a multi storage bucket
+List<Character>[] chArr = new List[maxFreq + 1];
+//Add them in a bucket by it's frequency
+for(char ch : charCount.keySet()) {
+int num = charCount.get(ch);
+if(chArr[num] == null) {
+chArr[num] = new ArrayList<>();
+}
+chArr[num].add(ch);
+}
+List<Character> cha = new ArrayList<>();
+//Traverse a bucket and prepare final output
+for(int i = chArr.length-1; i >=0; i--) {
+if(chArr[i]!=null){
+List<Character> list = chArr[i]; 
+for(Character ch : list) {
+int f = charCount.get(ch);
+while(f > 0) {
+res.append(ch);
+f--;
+}
+}
+}
+}
+return res.toString();
+}
+public static void main(String[] args) {
+String result = sortChar("Eett");
+System.out.println(result);
+}
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+	
+/*
+ Java code to sort characters by frequency
+*/
+public class SortCharByFreq {
+ 
+    public static String sortChar(String s) {
+ 
+        int n = s.length();
+        StringBuilder res = new StringBuilder();
+        Map<Character, Integer> charCount = new HashMap<>();
+ 
+        int maxFreq = 0;
+        int freq = 0;
+ 
+        //Traverse a string
+        for(int i = 0; i < s.length(); i++) {
+           //pick each character
+           char ch = s.charAt(i);
+ 
+           freq = charCount.getOrDefault(ch, 0)+1;
+           //put character with their count in a map
+           charCount.put(ch, freq);            
+            //Keep track of maximum frequency
+            maxFreq = Math.max(freq,maxFreq);        
+        }
+ 
+       //Create a multi storage bucket
+       List<Character>[] chArr = new List[maxFreq + 1];
+ 
+      //Add them in a bucket by it's frequency
+      for(char ch : charCount.keySet()) {
+         int num = charCount.get(ch);
+         if(chArr[num] == null) {
+           chArr[num] = new ArrayList<>();
+         }
+         chArr[num].add(ch);
+      }
+        
+        List<Character> cha = new ArrayList<>();
+ 
+      //Traverse a bucket and prepare final output
+       for(int i = chArr.length-1; i >=0; i--) {
+ 
+          if(chArr[i]!=null){
+             List<Character> list = chArr[i]; 
+             
+             for(Character ch : list) {
+                int f = charCount.get(ch);
+                 
+                 while(f > 0) {
+                    res.append(ch);
+                    f--;
+                }
+             }
+          }
+       }
+       return res.toString();
+  }
+ 
+   public static void main(String[] args) {
+ 
+        String result = sortChar("Eett");
+        System.out.println(result);
+   }
+}
+
+Find top k most frequent elements
+
+How to sort a string in decreasing order based on the count of characters: Video Tutorial
+Share
+Tweet
+Share
+0 Shares
+Related posts:
+
+    First Non Repeating Character in a Stream of Characters
+    Group Anagrams Together
+    Find Top K Frequent Elements |3 Approaches
+    Find Duplicate Characters in a String : Java Code
+
+Tagged Sort Characters by Frequency LeetCode. Bookmark the permalink.
+About WebRewrite
+I am technology lover who loves to keep updated with latest technology. My interest field is Web Development.
+View all posts by WebRewrite →
+« Find a Peak Element in Array
+Longest Substring Without Repeating Characters »
+
+    Support Me on PayPal
+
+    Programming Video Tutorials
+
+
+
+    Related Posts (YARPP)
+        PHP Multiple Type (MCQ) Objective Interview Questions
+        MCQ on Recursion – Recursion Objective Questions for Practice
+        Top Five Most Used PHP Array Functions for Beginners
+        How to Store & Retrieve an Array Value in a Cookie
+    Topics
+        String
+        Linked List
+        Binary Tree
+        Hash Map
+        Java
+        Queue
+        Stack
+    	
+        Binary Search
+        Programming
+        Sliding Window
+        Composer
+        Memcache
+        Javascript
+        Cookie
+
