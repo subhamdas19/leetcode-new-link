@@ -1,5 +1,6 @@
 Maximum profit by buying and selling a share at most twice
 https://www.geeksforgeeks.org/maximum-profit-by-buying-and-selling-a-share-at-most-twice/
+https://www.youtube.com/watch?v=37s1_xBiqH0
 
 We can do this O(n) using the following Efficient Solution. The idea is to store the maximum possible profit of every subarray and solve the problem in the following two phases.
 
