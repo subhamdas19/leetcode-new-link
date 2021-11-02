@@ -1,0 +1,25 @@
+
+https://leetcode.com/problems/number-of-different-integers-in-a-string/
+
+import java.math.BigInteger;
+class Solution {
+    public int numDifferentIntegers(String word) {
+        StringBuilder sb = new StringBuilder();
+        HashSet<BigInteger> hSet = new HashSet<BigInteger>();
+        for(int i = 0; i < word.length(); i++) {
+            if(Character.isDigit(word.charAt(i))) {
+                 sb.append(word.charAt(i));
+            } else {
+                if(sb.length() > 0) {
+                    hSet.add(new BigInteger(sb.toString()));
+                    sb.setLength(0);
+                }
+            }
+        }
+        if(sb.length() > 0) {
+                    hSet.add(new BigInteger(sb.toString()));
+                    sb.setLength(0);
+        }
+        return hSet.size();
+    }
+}
